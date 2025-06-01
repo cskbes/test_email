@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Click Email Campaign</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emailjs-com/3.2.0/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .email-preview {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .email-preview h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .email-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto 0;
+            min-width: 200px;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status-message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .setup-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .setup-notice strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Test Email Campaign</h1>
+            <p>Fill in your information below to send a test email to CK</p>
+        </div>
+
+        <div class="content">
+            <div class="setup-notice" style="background: #d4edda; color: #155724; border-left: 4px solid #28a745;">
+                <strong>✅ EmailJS Configured!</strong>
+                Your email form is ready to use. Fill in your information and click send to test it.
+            </div>
+
+            <form id="emailForm">
+                <div class="form-section">
+                    <h3>👤 Your Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="userName">Your Full Name *</label>
+                        <input type="text" id="userName" name="userName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userEmail">Your Email Address *</label>
+                        <input type="email" id="userEmail" name="userEmail" required>
+                    </div>
+                </div>
+
+                <div class="email-preview">
+                    <h4>📋 Email Preview</h4>
+                    <div><strong>To:</strong> <span id="previewRecipient">cskao@hotmail.com</span></div>
+                    <div><strong>Subject:</strong> <span id="previewSubject">Test Email from One-Click Campaign</span></div>
+                    <div class="email-content" id="previewContent">
+Dear CK,
+
+This is a test of the one-click email system.
+
+I am testing the functionality to ensure that:
+
+• The form collects user information correctly
+• The email template processes properly
+• The sending mechanism works as expected
+• Users receive confirmation of their submission
+
+This test email was sent by: [USER_NAME]
+
+Thank you for helping test this system!
+
+Best regards,
+[USER_NAME]
+                    </div>
+                </div>
+
+                <div class="status-message" id="statusMessage"></div>
+
+                <button type="submit" class="send-button" id="sendButton">
+                    🚀 Send Email Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // EmailJS Configuration - CONFIGURED!
+        const EMAILJS_SERVICE_ID = 'service_zf9dbpb';
+        const EMAILJS_TEMPLATE_ID = 'template_lbu5q5p';
+        const EMAILJS_PUBLIC_KEY = 'G8WFX-uXZXqyByVNE';
+
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
+        // Form elements
+        const form = document.getElementById('emailForm');
+        const sendButton = document.getElementById('sendButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Preview elements
+        const previewRecipient = document.getElementById('previewRecipient');
+        const previewSubject = document.getElementById('previewSubject');
+        const previewContent = document.getElementById('previewContent');
+
+        // Update preview in real-time
+        function updatePreview() {
+            const userName = document.getElementById('userName').value || '[USER_NAME]';
+            
+            // Fixed values for test
+            const recipient = 'cskao@hotmail.com';
+            const subject = 'Test Email from One-Click Campaign';
+            const template = `Dear CK,
+
+This is a test of the one-click email system.
+
+I am testing the functionality to ensure that:
+
+• The form collects user information correctly
+• The email template processes properly
+• The sending mechanism works as expected
+• Users receive confirmation of their submission
+
+This test email was sent by: [USER_NAME]
+
+Thank you for helping test this system!
+
+Best regards,
+[USER_NAME]`;
+
+            previewRecipient.textContent = recipient;
+            previewSubject.textContent = subject;
+            
+            // Replace placeholders in template
+            let processedContent = template.replace(/\[USER_NAME\]/g, userName);
+            
+            previewContent.textContent = processedContent;
+        }
+
+        // Add event listeners for real-time preview
+        ['userName', 'userEmail'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        // Initial preview update
+        updatePreview();
+
+        // Show status message
+        function showStatus(message, isError = false) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${isError ? 'status-error' : 'status-success'}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check if EmailJS is configured
+            if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID') {
+                showStatus('⚠️ EmailJS not configured yet. Please follow the setup instructions in the code.', true);
+                return;
+            }
+
+            sendButton.disabled = true;
+            sendButton.textContent = '⏳ Sending...';
+
+            try {
+                const formData = new FormData(form);
+                const userName = formData.get('userName');
+                const userEmail = formData.get('userEmail');
+                
+                // Fixed values for test
+                const recipientEmail = 'cskao@hotmail.com';
+                const subject = 'Test Email from One-Click Campaign';
+                const template = `Dear CK,
+
+This is a test of the one-click email system.
+
+I am testing the functionality to ensure that:
+
+• The form collects user information correctly
+• The email template processes properly
+• The sending mechanism works as expected
+• Users receive confirmation of their submission
+
+This test email was sent by: [USER_NAME]
+
+Thank you for helping test this system!
+
+Best regards,
+[USER_NAME]`;
+
+                // Process the email content
+                const emailContent = template.replace(/\[USER_NAME\]/g, userName);
+
+                // Prepare email parameters
+                const emailParams = {
+                    to_email: recipientEmail,
+                    from_name: userName,
+                    from_email: userEmail,
+                    subject: subject,
+                    message: emailContent
+                };
+
+                // Send email
+                const response = await emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
+                    emailParams
+                );
+
+                showStatus('✅ Email sent successfully! You should receive a confirmation copy shortly.');
+                form.reset();
+                updatePreview();
+
+            } catch (error) {
+                console.error('Error sending email:', error);
+                showStatus('❌ Failed to send email. Please try again or contact support.', true);
+            } finally {
+                sendButton.disabled = false;
+                sendButton.textContent = '🚀 Send Email Now';
+            }
+        });
+    </script>
+</body>
+</html>
