@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One-Click Email Campaign</title>
+    <title>Test Email Campaign</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * {
@@ -171,20 +171,6 @@
             border: 1px solid #f5c6cb;
         }
 
-        .setup-notice {
-            background: #fff3cd;
-            color: #856404;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #ffc107;
-        }
-
-        .setup-notice strong {
-            display: block;
-            margin-bottom: 10px;
-        }
-
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -217,7 +203,6 @@
         </div>
 
         <div class="content">
-
             <form id="emailForm">
                 <div class="form-section">
                     <h3>👤 Your Information</h3>
@@ -268,7 +253,7 @@ Best regards,
     </div>
 
     <script>
-        // EmailJS Configuration - CONFIGURED!
+        // EmailJS Configuration
         const EMAILJS_SERVICE_ID = 'service_zf9dbpb';
         const EMAILJS_TEMPLATE_ID = 'template_lbu5q5p';
         const EMAILJS_PUBLIC_KEY = 'G8WFX-uXZXqyByVNE';
@@ -342,12 +327,6 @@ Best regards,
         // Handle form submission
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Check if EmailJS is configured
-            if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID') {
-                showStatus('⚠️ EmailJS not configured yet. Please follow the setup instructions in the code.', true);
-                return;
-            }
 
             sendButton.disabled = true;
             sendButton.textContent = '⏳ Sending...';
@@ -371,30 +350,61 @@ I am testing the functionality to ensure that:
 • The sending mechanism works as expected
 • Users receive confirmation of their submission
 
-This test email was sent by: [USER_NAME]
+This test email was sent by: ${userName}
 
 Thank you for helping test this system!
 
 Best regards,
-[USER_NAME]`;
+${userName}`;
 
-                // Process the email content
-                const emailContent = template.replace(/\[USER_NAME\]/g, userName);
-
-                // Prepare email parameters
+                // FIRST EMAIL: Send to CK
                 const emailParams = {
-                    to_email: recipientEmail,
+                    to_email: recipientEmail,  // This goes to CK
                     from_name: userName,
                     from_email: userEmail,
                     subject: subject,
-                    message: emailContent
+                    message: template
                 };
 
-                // Send email
+                console.log('Sending main email to:', recipientEmail);
                 const response = await emailjs.send(
                     EMAILJS_SERVICE_ID,
                     EMAILJS_TEMPLATE_ID,
                     emailParams
+                );
+
+                // SECOND EMAIL: Send confirmation to sender
+                const confirmationParams = {
+                    to_email: userEmail,  // This goes to YOU
+                    from_name: 'Test Email Campaign',
+                    from_email: 'noreply@campaign.com',
+                    subject: 'Confirmation: Your email was sent successfully',
+                    message: `Hi ${userName},
+
+Thank you for using our one-click email campaign!
+
+Your email has been successfully sent to CK (cskao@hotmail.com) with the following details:
+
+Subject: Test Email from One-Click Campaign
+Sent at: ${new Date().toLocaleString()}
+
+Here's a copy of what was sent:
+
+---
+${template}
+---
+
+Thank you for your participation!
+
+Best regards,
+Test Email Campaign Team`
+                };
+
+                console.log('Sending confirmation email to:', userEmail);
+                await emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
+                    confirmationParams
                 );
 
                 showStatus('✅ Email sent successfully! You should receive a confirmation copy shortly.');
