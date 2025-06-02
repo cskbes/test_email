@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Email Campaign</title>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <title>Support Principal Garmon Campaign</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -118,9 +118,13 @@
             padding: 20px;
             border-radius: 8px;
             white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
+            font-family: Arial, sans-serif;
             font-size: 14px;
             line-height: 1.5;
+        }
+
+        .email-content strong {
+            font-weight: bold;
         }
 
         .send-button {
@@ -198,8 +202,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📧 Test Email Campaign</h1>
-            <p>Fill in your information below to send a test email to CK</p>
+            <h1>📧 Support Principal Garmon</h1>
+            <p>Send your message to Superintendent Carvalho supporting Principal Garmon</p>
         </div>
 
         <div class="content">
@@ -220,46 +224,54 @@
 
                 <div class="email-preview">
                     <h4>📋 Email Preview</h4>
-                    <div><strong>To:</strong> <span id="previewRecipient">cskao@hotmail.com</span></div>
-                    <div><strong>Subject:</strong> <span id="previewSubject">Test Email from One-Click Campaign</span></div>
+                    <div><strong>To:</strong> <span id="previewRecipient">cynthia.kao@gmail.com</span></div>
+                    <div><strong>Subject:</strong> <span id="previewSubject">Strong Opposition to Principal Garmon's Removal - Broadway Elementary</span></div>
                     <div class="email-content" id="previewContent">
-Dear CK,
+Dear <strong>Superintendent Carvalho</strong>:
 
-This is a test of the one-click email system.
+I am writing to express my strong opposition to the District's decision to remove Principal Garmon from Broadway Elementary School. As a parent at BES, I believe this decision is misguided and will ultimately harm our school and the children. <strong>More troubling, this appears to be a transparent attempt to scapegoat Principal Garmon for the District's own systemic failures.</strong>
 
-I am testing the functionality to ensure that:
+Principal Garmon has demonstrated unwavering dedication throughout her 10+ year tenure and possesses irreplaceable understanding of Broadway Elementary's unique dual language immersion programs. <strong>The District seems determined to ignore a fundamental truth</strong>: the complicated dynamics between our programs have existed for over 10 years---long before her leadership. She has skillfully navigated these complexities despite District constraints, including following a UCP complaint filed only six weeks into her principalship.
 
-• The form collects user information correctly
-• The email template processes properly
-• The sending mechanism works as expected
-• Users receive confirmation of their submission
+<strong>Replacing Principal Garmon will exacerbate, rather than resolve, the underlying issues</strong> she inherited from LAUSD decisions over the years. <strong>This decision represents a failure of leadership at the District level</strong> and takes the easy path of removing a dedicated principal. <strong>Removing Principal Garmon would devastate the school, continue LAUSD's longstanding pattern of neglect toward Broadway, and inflame existing tensions.</strong>
 
-This test email was sent by: [USER_NAME]
+<strong>The District needs to find a real solution to Broadway's systemic challenges, but removing our principal is not it.</strong> I demand that the District reconsider this decision and instead work collaboratively with Principal Garmon to address the systemic issues that face our school. Her expertise and institutional knowledge make her the right person to lead Broadway Elementary through these challenges.
 
-Thank you for helping test this system!
+Sincerely,
 
-Best regards,
 [USER_NAME]
+
+Parent of Broadway Elementary School Student
                     </div>
                 </div>
 
                 <div class="status-message" id="statusMessage"></div>
 
                 <button type="submit" class="send-button" id="sendButton">
-                    🚀 Send Email Now
+                    🚀 Send Email to Superintendent Carvalho
                 </button>
             </form>
         </div>
     </div>
 
     <script>
-        // EmailJS Configuration
-        const EMAILJS_SERVICE_ID = 'service_zf9dbpb';
-        const EMAILJS_TEMPLATE_ID = 'template_lbu5q5p';
-        const EMAILJS_PUBLIC_KEY = 'G8WFX-uXZXqyByVNE';
+        // Wait for EmailJS to load before initializing
+        window.addEventListener('load', function() {
+            // Check if EmailJS loaded
+            if (typeof emailjs === 'undefined') {
+                console.error('EmailJS failed to load');
+                document.getElementById('sendButton').disabled = true;
+                document.getElementById('sendButton').textContent = 'EmailJS Failed to Load';
+                return;
+            }
 
-        // Initialize EmailJS
-        emailjs.init(EMAILJS_PUBLIC_KEY);
+            // Initialize EmailJS
+            emailjs.init("G8WFX-uXZXqyByVNE");
+
+            // EmailJS Configuration
+            const EMAILJS_SERVICE_ID = 'service_zf9dbpb';
+            const EMAILJS_TEMPLATE_ID = 'template_lbu5q5p';
+            const EMAILJS_PUBLIC_KEY = 'G8WFX-uXZXqyByVNE';
 
         // Form elements
         const form = document.getElementById('emailForm');
@@ -275,34 +287,33 @@ Best regards,
         function updatePreview() {
             const userName = document.getElementById('userName').value || '[USER_NAME]';
             
-            // Fixed values for test
-            const recipient = 'cskao@hotmail.com';
-            const subject = 'Test Email from One-Click Campaign';
-            const template = `Dear CK,
+            // Fixed values for campaign
+            const recipient = 'cynthia.kao@gmail.com';
+            const subject = 'Strong Opposition to Principal Garmon\'s Removal - Broadway Elementary';
+            const template = `Dear <strong>Superintendent Carvalho</strong>:
 
-This is a test of the one-click email system.
+I am writing to express my strong opposition to the District's decision to remove Principal Garmon from Broadway Elementary School. As a parent at BES, I believe this decision is misguided and will ultimately harm our school and the children. <strong>More troubling, this appears to be a transparent attempt to scapegoat Principal Garmon for the District's own systemic failures.</strong>
 
-I am testing the functionality to ensure that:
+Principal Garmon has demonstrated unwavering dedication throughout her 10+ year tenure and possesses irreplaceable understanding of Broadway Elementary's unique dual language immersion programs. <strong>The District seems determined to ignore a fundamental truth</strong>: the complicated dynamics between our programs have existed for over 10 years---long before her leadership. She has skillfully navigated these complexities despite District constraints, including following a UCP complaint filed only six weeks into her principalship.
 
-• The form collects user information correctly
-• The email template processes properly
-• The sending mechanism works as expected
-• Users receive confirmation of their submission
+<strong>Replacing Principal Garmon will exacerbate, rather than resolve, the underlying issues</strong> she inherited from LAUSD decisions over the years. <strong>This decision represents a failure of leadership at the District level</strong> and takes the easy path of removing a dedicated principal. <strong>Removing Principal Garmon would devastate the school, continue LAUSD's longstanding pattern of neglect toward Broadway, and inflame existing tensions.</strong>
 
-This test email was sent by: [USER_NAME]
+<strong>The District needs to find a real solution to Broadway's systemic challenges, but removing our principal is not it.</strong> I demand that the District reconsider this decision and instead work collaboratively with Principal Garmon to address the systemic issues that face our school. Her expertise and institutional knowledge make her the right person to lead Broadway Elementary through these challenges.
 
-Thank you for helping test this system!
+Sincerely,
 
-Best regards,
-[USER_NAME]`;
+[USER_NAME]
+
+Parent of Broadway Elementary School Student`;
 
             previewRecipient.textContent = recipient;
             previewSubject.textContent = subject;
             
-            // Replace placeholders in template
+            // Replace placeholders in template for preview
             let processedContent = template.replace(/\[USER_NAME\]/g, userName);
             
-            previewContent.textContent = processedContent;
+            // Display HTML content properly in preview
+            previewContent.innerHTML = processedContent;
         }
 
         // Add event listeners for real-time preview
@@ -336,37 +347,36 @@ Best regards,
                 const userName = formData.get('userName');
                 const userEmail = formData.get('userEmail');
                 
-                // Fixed values for test
-                const recipientEmail = 'cskao@hotmail.com';
-                const subject = 'Test Email from One-Click Campaign';
-                const template = `Dear CK,
+                // Fixed values for campaign
+                const recipientEmail = 'cynthia.kao@gmail.com';
+                const subject = 'Strong Opposition to Principal Garmon\'s Removal - Broadway Elementary';
+                
+                // Template for email to Superintendent
+                const superintendentTemplate = `<p>Dear <strong>Superintendent Carvalho</strong>:</p>
 
-This is a test of the one-click email system.
+<p>I am writing to express my strong opposition to the District's decision to remove Principal Garmon from Broadway Elementary School. As a parent at BES, I believe this decision is misguided and will ultimately harm our school and the children. <strong>More troubling, this appears to be a transparent attempt to scapegoat Principal Garmon for the District's own systemic failures.</strong></p>
 
-I am testing the functionality to ensure that:
+<p>Principal Garmon has demonstrated unwavering dedication throughout her 10+ year tenure and possesses irreplaceable understanding of Broadway Elementary's unique dual language immersion programs. <strong>The District seems determined to ignore a fundamental truth</strong>: the complicated dynamics between our programs have existed for over 10 years—long before her leadership. She has skillfully navigated these complexities despite District constraints, including following a UCP complaint filed only six weeks into her principalship.</p>
 
-• The form collects user information correctly
-• The email template processes properly
-• The sending mechanism works as expected
-• Users receive confirmation of their submission
+<p><strong>Replacing Principal Garmon will exacerbate, rather than resolve, the underlying issues</strong> she inherited from LAUSD decisions over the years. <strong>This decision represents a failure of leadership at the District level</strong> and takes the easy path of removing a dedicated principal. <strong>Removing Principal Garmon would devastate the school, continue LAUSD's longstanding pattern of neglect toward Broadway, and inflame existing tensions.</strong></p>
 
-This test email was sent by: ${userName}
+<p><strong>The District needs to find a real solution to Broadway's systemic challenges, but removing our principal is not it.</strong> I demand that the District reconsider this decision and instead work collaboratively with Principal Garmon to address the systemic issues that face our school. Her expertise and institutional knowledge make her the right person to lead Broadway Elementary through these challenges.</p>
 
-Thank you for helping test this system!
+<p>Sincerely,</p>
 
-Best regards,
-${userName}`;
+<p><strong>${userName}</strong><br>
+Parent of Broadway Elementary School Student</p>`;
 
-                // FIRST EMAIL: Send to CK
+                // FIRST EMAIL: Send to Superintendent
                 const emailParams = {
-                    to_email: recipientEmail,  // This goes to CK
+                    to_email: recipientEmail,
                     from_name: userName,
                     from_email: userEmail,
                     subject: subject,
-                    message: template
+                    message: superintendentTemplate
                 };
 
-                console.log('Sending main email to:', recipientEmail);
+                console.log('Sending email to Superintendent:', recipientEmail);
                 const response = await emailjs.send(
                     EMAILJS_SERVICE_ID,
                     EMAILJS_TEMPLATE_ID,
@@ -374,30 +384,32 @@ ${userName}`;
                 );
 
                 // SECOND EMAIL: Send confirmation to sender
+                const confirmationTemplate = `<p>Hi <strong>${userName}</strong>,</p>
+
+<p>Thank you for supporting Principal Garmon!</p>
+
+<p>Your email has been successfully sent to Superintendent Carvalho (cynthia.kao@gmail.com) with the following details:</p>
+
+<p><strong>Subject:</strong> Strong Opposition to Principal Garmon's Removal - Broadway Elementary<br>
+<strong>Sent at:</strong> ${new Date().toLocaleString()}</p>
+
+<p>Here's a copy of what was sent:</p>
+
+<hr>
+${superintendentTemplate}
+<hr>
+
+<p>Thank you for your support in keeping Principal Garmon at Broadway Elementary School!</p>
+
+<p>Best regards,<br>
+Support Principal Garmon Campaign Team</p>`;
+
                 const confirmationParams = {
-                    to_email: userEmail,  // This goes to YOU
-                    from_name: 'Test Email Campaign',
+                    to_email: userEmail,
+                    from_name: 'Support Principal Garmon Campaign',
                     from_email: 'noreply@campaign.com',
-                    subject: 'Confirmation: Your email was sent successfully',
-                    message: `Hi ${userName},
-
-Thank you for using our one-click email campaign!
-
-Your email has been successfully sent to CK (cskao@hotmail.com) with the following details:
-
-Subject: Test Email from One-Click Campaign
-Sent at: ${new Date().toLocaleString()}
-
-Here's a copy of what was sent:
-
----
-${template}
----
-
-Thank you for your participation!
-
-Best regards,
-Test Email Campaign Team`
+                    subject: 'Confirmation: Your email opposing Principal Garmon\'s removal was sent',
+                    message: confirmationTemplate
                 };
 
                 console.log('Sending confirmation email to:', userEmail);
@@ -407,7 +419,7 @@ Test Email Campaign Team`
                     confirmationParams
                 );
 
-                showStatus('✅ Email sent successfully! You should receive a confirmation copy shortly.');
+                showStatus('✅ Email sent successfully to Superintendent Carvalho! You should receive a confirmation copy shortly.');
                 form.reset();
                 updatePreview();
 
@@ -416,9 +428,11 @@ Test Email Campaign Team`
                 showStatus('❌ Failed to send email. Please try again or contact support.', true);
             } finally {
                 sendButton.disabled = false;
-                sendButton.textContent = '🚀 Send Email Now';
+                sendButton.textContent = '🚀 Send Email to Superintendent Carvalho';
             }
         });
+
+        }); // End of window load event listener
     </script>
 </body>
 </html>
